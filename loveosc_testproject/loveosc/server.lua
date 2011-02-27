@@ -16,6 +16,9 @@
     You should have received a copy of the GNU General Public License
     along with Foobar.  If not, see <http://www.gnu.org/licenses/>.	
 --]]
+
+-- This is a luaOSC Fork from Jost Tobias Springenberg, additional code and modifications by Tilmann Hars, Headchant.com, Copyright 2010
+
 require "socket"
 
 osc.server = {}
