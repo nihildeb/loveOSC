@@ -1,7 +1,13 @@
 require "loveosc"
 -- Initialization
 function love.load()
+	
+	-- configure a function which is called when a message arrives at the server
+	osc.server:setHandler(function() 
+		print("receiving osc message")
+	end)
 
+	-- example OSC message:
 	var = {
 		"#bundle",
 		os.time(),
@@ -23,22 +29,22 @@ function love.load()
 	}
 
 
-
+	-- sends the var table as an OSC message
 	osc.client:send(var)
 
 end
 
+
+
 -- Logic
 function love.update(dt)
-	
+	-- calls the server receive loop, default port is 7771
+	osc.server:update(dt)
 end
 
 -- Input
 function love.keypressed(key)
-	if key=="b" then
-		osc.client:send(var)
 
-	end
 end
 
 function love.keyreleased()
