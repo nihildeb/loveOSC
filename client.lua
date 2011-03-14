@@ -22,7 +22,7 @@
 local socket = require "socket"
 local base = _G
 local string = require("string")
-local vstruct = require "loveosc/vstruct" 
+local vstruct = require "LICK/lib/loveosc/vstruct" 
 local pack = vstruct.pack
 local upack = vstruct.unpack
 
@@ -32,7 +32,9 @@ local upack = vstruct.unpack
 
 osc.client = {}
 osc.client.host = "localhost"
+osc.client.ip = nil
 osc.client.port = 57110
+osc.client.timeout = 0
 
 PROTOCOL = "OSC/1.0"
 
@@ -42,16 +44,17 @@ IMMEDIATE = string.rep('0', 31) .. '1'
 
 
 function osc.client:send( data )
-	local ip, port = assert(socket.dns.toip(osc.client.host)), osc.client.port
+	local ip, port = osc.client.ip or assert(socket.dns.toip(osc.client.host)), osc.client.port
 	-- create a new UDP object
 	local udp = assert(socket.udp())
+	udp:settimeout(0)
 
 	--print(encode(data))
 	assert(udp:sendto(encode(data), ip, port), "could not send data")
 	--assert(udp:sendto(data, ip, port), "could not send data")
 
 	-- retrieve the answer and print results, warning: crashes love
-	--print(assert(udp:receive()))
+	--print(udp:receive() or "")
 end
 
 
@@ -82,14 +85,14 @@ function encode(data)
 		
 	if data[1] == "#bundle" then
 		msg = msg .. encode_string(data[1])
-		print("1 "..msg.."\n")
+		--print("1 "..msg.."\n")
 		msg = msg .. encode_timetag(data[2])
-		print("2 "..msg.."\n")
+		--print("2 "..msg.."\n")
 		idx = 3
 		while idx <= #data do
 			local submsg = encode(data[idx])
 			msg = msg .. encode_int(#submsg) .. submsg 
-			print(idx.." "..submsg.."\n")
+			--print(idx.." "..submsg.."\n")
 			idx = idx + 1
 		end
 		return msg
@@ -102,7 +105,7 @@ function encode(data)
 			typestring = typestring .. t
 			encodings = encodings .. collect_encoding_for_message(t, d)
 		end
-		print("else "..msg..encode_string(typestring) .. encodings.."\n")
+		--print("else "..msg..encode_string(typestring) .. encodings.."\n")
 
 		return msg .. encode_string(typestring) .. encodings
 	end

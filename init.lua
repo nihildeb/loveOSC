@@ -1,3 +1,3 @@
 osc = {}
-require "loveosc/client.lua"
-require "loveosc/server.lua"
+require "loveOSC/client"
+require "loveOSC/server"
