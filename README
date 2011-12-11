@@ -3,6 +3,11 @@ loveOSC is a fork of luaOSC(http://luaforge.net/projects/luaosc/) which implemen
 
 The testproject sends a OSC message to a server on port 57110, which is Supercolliders OSC port. It also receives OSC messages on port 7771.
 
+
 Features:
 - Client, sending/encoding OSC messages/bundles
 - Server, receiving/decoding/handle OSC messages
+
+Updates:
+12-11-11 Receiving OSC Messages seems to be broken, also since Löve 0.8 will probably allow the use of c-modules loveOSC will
+no longer be necessary...
